@@ -1,7 +1,7 @@
 package beaton;
 
 import java.awt.Font;
-import java.awt.Graphics;
+//import java.awt.Graphics; //not used until now
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -25,6 +25,7 @@ public class BeatOn extends JFrame {
 	// Buttons
 	private JButton startButton = new JButton("Start");
 	private JButton quitButton = new JButton("X");
+	private JButton backButton = new JButton("<");
 	
 	private int mouseX, mouseY;
 	
@@ -37,6 +38,8 @@ public class BeatOn extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		setLayout(null);
 		
 		// Add Resources
 		// MenuBar
@@ -56,38 +59,69 @@ public class BeatOn extends JFrame {
 				setLocation(x - mouseX, y - mouseY);
 			}
 		});
-		add(menuBar);
 		
 		// Title
 		titleLabel.setBounds(Main.SCREEN_WIDTH / 2 - 50, 100, 100, 100);
 		font = titleLabel.getFont();
 		titleLabel.setFont(new Font(font.getName(), Font.PLAIN, 30));
-		add(titleLabel);
 		
 		// StartButton
-		startButton.setBounds(Main.SCREEN_WIDTH / 2 - 75, Main.SCREEN_HEIGHT - 200, 150, 50);
-		//startButton.setBorderPainted(false);
-		startButton.setContentAreaFilled(false);
-		startButton.setFocusPainted(false);
+		styleButton(startButton, Main.SCREEN_WIDTH / 2 - 75, Main.SCREEN_HEIGHT - 200, 150, 50);
 		startButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				startGame();
 			}
 		});
-		add(startButton);
 		
 		// QuitButton
-		quitButton.setBounds(Main.SCREEN_WIDTH - 75, Main.SCREEN_HEIGHT - 75, 50, 50);
-		quitButton.setContentAreaFilled(false);
-		quitButton.setFocusPainted(false);
+		styleButton(quitButton, Main.SCREEN_WIDTH - 75, Main.SCREEN_HEIGHT - 75, 50, 50);
 		quitButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				terminate();
 			}
 		});
+		
+		// BackButton
+		styleButton(backButton, 50, 50, 50, 50);
+		backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				backMain();
+			}
+		});
+		
+		// Screen Init
+		backButton.setVisible(false);
+		
+		add(menuBar);
+		add(titleLabel);
+		add(startButton);
 		add(quitButton);
+		
+		add(backButton);
+	}
+	private void styleButton(JButton jb, int x, int y, int width, int height) {
+		jb.setBounds(x, y, width, height);
+		jb.setContentAreaFilled(false);
+		jb.setFocusPainted(false);
+	}
+	
+	private void startGame() {
+		titleLabel.setVisible(false);
+		startButton.setVisible(false);
+		quitButton.setVisible(false);
+		
+		backButton.setVisible(true);
+	}
+	
+	private void backMain() {
+		backButton.setVisible(false);
+		
+		titleLabel.setVisible(true);
+		startButton.setVisible(true);
+		quitButton.setVisible(true);
 	}
 	
 	public void terminate() {
